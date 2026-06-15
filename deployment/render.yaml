@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: indian-government-sentiment-dashboard
+    env: docker
+    dockerfilePath: deployment/Dockerfile
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: REDDIT_CLIENT_ID
+        sync: false
+      - key: REDDIT_CLIENT_SECRET
+        sync: false
+      - key: REDDIT_USER_AGENT
+        sync: false
+      - key: GCP_PROJECT_ID
+        sync: false
+      - key: BIGQUERY_DATASET
+        value: reddit_government_sentiment

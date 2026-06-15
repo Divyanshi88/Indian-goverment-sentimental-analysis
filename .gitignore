@@ -1,0 +1,37 @@
+# Python
+
+**pycache**/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+
+venv/
+.env
+
+# Streamlit
+
+.streamlit/
+
+# macOS
+
+.DS_Store
+
+# Data
+
+data/raw/
+data/processed/
+
+# Models
+
+models/
+
+# Jupyter
+
+.ipynb_checkpoints/
+
+# IDE
+
+.vscode/
+.idea/

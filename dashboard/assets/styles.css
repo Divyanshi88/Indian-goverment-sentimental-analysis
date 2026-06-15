@@ -1,0 +1,147 @@
+:root {
+--primary: #6C63FF;
+--secondary: #A855F7;
+--accent: #EC4899;
+
+--surface: #ffffff;
+--background: #F8FAFC;
+
+--ink: #1E293B;
+--muted: #64748B;
+--line: #E2E8F0;
+}
+
+/* Main App */
+.stApp {
+background: var(--background);
+color: var(--ink);
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+background: #0F172A !important;
+border-right: none;
+}
+
+/* Sidebar text visibility fix */
+[data-testid="stSidebar"] * {
+color: #FFFFFF !important;
+}
+
+/* Sidebar inputs */
+[data-testid="stSidebar"] .stMultiSelect,
+[data-testid="stSidebar"] .stDateInput,
+[data-testid="stSidebar"] .stTextInput {
+background: #1E293B;
+border-radius: 12px;
+}
+
+/* Dashboard Title */
+.main h1 {
+color: var(--ink);
+font-weight: 800;
+font-size: 3rem;
+margin-bottom: 0.5rem;
+}
+
+/* Subtitle */
+.section-note {
+color: var(--muted);
+font-size: 1rem;
+margin-bottom: 1rem;
+}
+
+/* KPI Cards */
+.metric-card {
+background: var(--surface);
+border-radius: 16px;
+padding: 20px;
+min-height: 120px;
+
+border-left: 5px solid var(--primary);
+
+box-shadow:
+0 4px 20px rgba(0,0,0,0.06);
+
+transition: all 0.2s ease;
+}
+
+.metric-card:hover {
+transform: translateY(-3px);
+}
+
+.metric-card span {
+color: var(--muted);
+font-size: 0.8rem;
+font-weight: 700;
+text-transform: uppercase;
+}
+
+.metric-card strong {
+color: var(--ink);
+display: block;
+margin-top: 10px;
+font-size: 2rem;
+font-weight: 800;
+}
+
+/* Charts Container */
+[data-testid="stPlotlyChart"] {
+background: white;
+padding: 10px;
+border-radius: 16px;
+box-shadow:
+0 4px 20px rgba(0,0,0,0.05);
+}
+
+/* Tables */
+.stDataFrame {
+border-radius: 16px;
+border: 1px solid var(--line);
+overflow: hidden;
+}
+
+/* Headers */
+h1, h2, h3 {
+color: var(--ink);
+font-weight: 700;
+}
+
+/* Navigation Radio Buttons */
+.stRadio label {
+color: white !important;
+font-weight: 500;
+}
+
+/* Expander */
+.streamlit-expanderHeader {
+color: var(--ink);
+}
+
+/* Buttons */
+.stButton button {
+background: linear-gradient(
+135deg,
+var(--primary),
+var(--secondary)
+);
+
+color: white;
+border: none;
+border-radius: 10px;
+font-weight: 600;
+}
+
+.stButton button:hover {
+opacity: 0.92;
+}
+
+/* Remove Streamlit default top padding */
+.block-container {
+padding-top: 2rem;
+}
+
+/* Section spacing */
+.element-container {
+margin-bottom: 0.75rem;
+}

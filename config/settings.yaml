@@ -1,0 +1,27 @@
+project:
+  name: Indian Government Sentiment Analysis Dashboard
+  default_lookback_days: 30
+
+reddit:
+  subreddits:
+    - india
+    - IndiaSpeaks
+    - indianews
+    - unitedstatesofindia
+  post_limit: 150
+  comment_limit: 50
+  search_queries:
+    - government
+    - election
+    - policy
+    - budget
+    - parliament
+    - prime minister
+
+models:
+  traditional_model_path: models/logistic_regression.joblib
+  vectorizer_path: models/tfidf_vectorizer.joblib
+  transformer_model: distilbert-base-uncased-finetuned-sst-2-english
+
+database:
+  dataset: reddit_government_sentiment
