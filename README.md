@@ -108,10 +108,3 @@ docker run -p 8501:8501 india-gov-sentiment
 
 Render can use `deployment/render.yaml`. Streamlit Cloud can run `dashboard/app.py` directly after installing `requirements.txt`.
 
-## Interview Talking Points
-
-- Why the pipeline separates raw, processed, and aggregated data
-- How model comparison expands from lexicon baseline to traditional ML and transformer inference
-- How BigQuery tables are designed for scalable analytics
-- How the dashboard supports analyst workflows through filters and drill-down exploration
-- What changes are needed for scheduled real-time ingestion
