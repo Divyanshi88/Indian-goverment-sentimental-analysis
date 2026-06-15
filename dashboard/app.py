@@ -31,9 +31,9 @@ from src.analytics.aggregations import sentiment_summary, sentiment_timeline
 from src.feature_engineering.topics import extract_tfidf_keywords, lda_topics
 
 SENTIMENT_COLORS = {
-    "positive": "#1f9d73",
-    "negative": "#c93c37",
-    "neutral": "#64748b",
+    "positive": "#16a34a",
+    "negative": "#dc2626",
+    "neutral": "#334155",
 }
 
 st.set_page_config(
@@ -65,7 +65,8 @@ def sentiment_pie(summary: pd.DataFrame):
     """Create sentiment distribution pie chart when Plotly is installed."""
     if px is None:
         return None
-    return px.pie(
+
+    fig = px.pie(
         summary,
         names="sentiment",
         values="count",
@@ -73,47 +74,121 @@ def sentiment_pie(summary: pd.DataFrame):
         color_discrete_map=SENTIMENT_COLORS,
         hole=0.52,
     )
+    fig.update_traces(
+        textinfo="percent+label",
+        textfont_size=13,
+        textfont_color="#0f172a",
+        marker=dict(line=dict(color="#ffffff", width=2)),
+    )
+    fig.update_layout(
+        paper_bgcolor="#ffffff",
+        plot_bgcolor="#ffffff",
+        font_color="#0f172a",
+        margin=dict(t=10, b=10, l=10, r=10),
+        legend=dict(orientation="h", yanchor="bottom", y=1.05, xanchor="center", x=0.5, font=dict(color="#0f172a")),
+        height=360,
+        autosize=True,
+    )
+    return fig
 
 
 def sentiment_bar(summary: pd.DataFrame) -> alt.Chart:
     """Create sentiment distribution bar chart."""
-    return (
+    chart = (
         alt.Chart(summary)
-        .mark_bar(cornerRadiusTopLeft=4, cornerRadiusTopRight=4)
+        .mark_bar(cornerRadius=12)
         .encode(
-            x=alt.X("sentiment:N", title=None, sort=["positive", "neutral", "negative"]),
-            y=alt.Y("count:Q", title="Records"),
+            y=alt.Y(
+                "sentiment:N",
+                sort=["positive", "neutral", "negative"],
+                title=None,
+                axis=alt.Axis(labelAngle=0),
+            ),
+            x=alt.X("count:Q", title="Records", axis=alt.Axis(format=".0f")),
             color=alt.Color(
                 "sentiment:N",
                 scale=alt.Scale(
                     domain=list(SENTIMENT_COLORS),
                     range=list(SENTIMENT_COLORS.values()),
                 ),
+                legend=None,
             ),
             tooltip=["sentiment", "count", alt.Tooltip("percentage:Q", format=".1f")],
         )
-        .properties(height=280)
+        .properties(width="container", height=320)
+    )
+
+    label = (
+        alt.Chart(summary)
+        .mark_text(dx=8, dy=2, color="#0f172a", fontWeight="bold")
+        .encode(
+            y=alt.Y("sentiment:N", sort=["positive", "neutral", "negative"], axis=None),
+            x=alt.X("count:Q", title=None),
+            text=alt.Text("count:Q", format=",.0f"),
+        )
+    )
+
+    return (
+        (chart + label)
+        .configure_view(fill="#0f172a", strokeWidth=0)
+        .configure_axis(
+            labelColor="#ffffff",
+            titleColor="#ffffff",
+            gridColor="rgba(255,255,255,0.06)",
+            labelFontSize=12,
+            titleFontSize=13,
+        )
+        .configure_title(color="#ffffff", fontSize=16, anchor="start")
     )
 
 
 def timeline_chart(timeline: pd.DataFrame) -> alt.Chart:
     """Create sentiment timeline chart."""
-    return (
-        alt.Chart(timeline)
-        .mark_line(point=True)
-        .encode(
-            x=alt.X("period:T", title="Date"),
-            y=alt.Y("count:Q", title="Mentions"),
-            color=alt.Color(
-                "sentiment:N",
-                scale=alt.Scale(
-                    domain=list(SENTIMENT_COLORS),
-                    range=list(SENTIMENT_COLORS.values()),
-                ),
+    base = alt.Chart(timeline).encode(
+        x=alt.X(
+            "period:T",
+            title="Date",
+            axis=alt.Axis(format="%b %d", tickCount=6, labelAngle=-45),
+        ),
+        y=alt.Y("count:Q", title="Mentions", axis=alt.Axis(grid=True)),
+        color=alt.Color(
+            "sentiment:N",
+            scale=alt.Scale(
+                domain=list(SENTIMENT_COLORS),
+                range=list(SENTIMENT_COLORS.values()),
             ),
-            tooltip=["period:T", "sentiment:N", "count:Q"],
+            legend=alt.Legend(title="Sentiment", orient="top", direction="horizontal", labelFontSize=12, titleFontSize=13),
+        ),
+        tooltip=["period:T", "sentiment:N", "count:Q"],
+    )
+
+    # draw area, line and points using the encoded color while making the
+    # chart plot area dark with white labels for high contrast.
+    area = base.mark_area(opacity=0.18, interpolate="monotone")
+    line = base.mark_line(interpolate="monotone", strokeWidth=3)
+    points = base.mark_circle(size=80)
+
+    return (
+        (area + line + points)
+        .properties(width="container", height=420)
+        .interactive()
+        .configure_view(fill="#0f172a", strokeWidth=0)
+        .configure_axis(
+            labelColor="#ffffff",
+            titleColor="#ffffff",
+            gridColor="rgba(255,255,255,0.06)",
+            labelFontSize=12,
+            titleFontSize=13,
+            titleFontWeight="bold",
+            labelAngle=-45,
         )
-        .properties(height=360)
+        .configure_legend(
+            labelColor="#ffffff",
+            titleColor="#ffffff",
+            labelFontSize=12,
+            titleFontSize=13,
+        )
+        .configure_title(color="#ffffff", fontSize=16)
     )
 
 
@@ -123,19 +198,45 @@ def inject_css() -> None:
         st.markdown(f"<style>{css_path.read_text(encoding='utf-8')}</style>", unsafe_allow_html=True)
 
 
-def metric_card(label: str, value: str) -> None:
+def page_header() -> None:
     st.markdown(
-        f'<div class="metric-card"><span>{label}</span><strong>{value}</strong></div>',
+        """
+        <div class="hero-panel">
+            <div>
+                <div class="hero-label">Indian Government Sentiment Monitoring</div>
+                <h1>Reddit opinion trends made easy</h1>
+                <p class="hero-subtitle">
+                    Visualize sentiment across India-focused Reddit communities, compare daily trends, topic signals, and sample content in a polished analyst dashboard.
+                </p>
+            </div>
+            <div class="hero-badge">Sample data included</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def metric_card(label: str, value: str, accent: str = "var(--primary)") -> None:
+    st.markdown(
+        f'<div class="metric-card" style="border-left-color: {accent};"><span>{label}</span><strong>{value}</strong></div>',
         unsafe_allow_html=True,
     )
 
 
 def filter_content(frame: pd.DataFrame) -> pd.DataFrame:
     st.sidebar.header("Filters")
+    st.sidebar.markdown(
+        "Use these filters to narrow subreddit themes, sentiment labels, content type, and date range."
+    )
     subreddits = st.sidebar.multiselect(
         "Subreddit",
         sorted(frame["subreddit"].dropna().unique()),
         default=sorted(frame["subreddit"].dropna().unique()),
+    )
+    content_types = st.sidebar.multiselect(
+        "Content type",
+        sorted(frame["content_type"].dropna().unique()),
+        default=sorted(frame["content_type"].dropna().unique()),
     )
     sentiments = st.sidebar.multiselect(
         "Sentiment",
@@ -148,7 +249,9 @@ def filter_content(frame: pd.DataFrame) -> pd.DataFrame:
     query = st.sidebar.text_input("Keyword search")
 
     filtered = frame[
-        frame["subreddit"].isin(subreddits) & frame["sentiment"].isin(sentiments)
+        frame["subreddit"].isin(subreddits)
+        & frame["content_type"].isin(content_types)
+        & frame["sentiment"].isin(sentiments)
     ].copy()
     if len(date_range) == 2:
         filtered = filtered[(filtered["date"] >= date_range[0]) & (filtered["date"] <= date_range[1])]

@@ -1,147 +1,221 @@
 :root {
---primary: #6C63FF;
---secondary: #A855F7;
---accent: #EC4899;
-
---surface: #ffffff;
---background: #F8FAFC;
-
---ink: #1E293B;
---muted: #64748B;
---line: #E2E8F0;
+  --primary: #4f46e5;
+  --secondary: #22c55e;
+  --accent: #e879f9;
+  --surface: #ffffff;
+  --background: #eef2ff;
+  --ink: #0f172a;
+  --muted: #475569;
+  --line: #cbd5e1;
+  --panel: #f8fafc;
 }
 
 /* Main App */
 .stApp {
-background: var(--background);
-color: var(--ink);
+  background: var(--background);
+  color: var(--ink);
 }
 
 /* Sidebar */
 [data-testid="stSidebar"] {
-background: #0F172A !important;
-border-right: none;
+  background: #0f172a !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Sidebar text visibility fix */
 [data-testid="stSidebar"] * {
-color: #FFFFFF !important;
+  color: #f8fafc !important;
+}
+
+/* Sidebar header */
+[data-testid="stSidebar"] .css-1d391kg {
+  color: #f8fafc !important;
 }
 
 /* Sidebar inputs */
 [data-testid="stSidebar"] .stMultiSelect,
 [data-testid="stSidebar"] .stDateInput,
 [data-testid="stSidebar"] .stTextInput {
-background: #1E293B;
-border-radius: 12px;
+  background: #111827;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Sidebar labels */
+[data-testid="stSidebar"] label {
+  color: #d1d5db !important;
+}
+
+/* Hero panel */
+.hero-panel {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 28px 30px;
+  margin-bottom: 24px;
+  border-radius: 24px;
+  background: linear-gradient(130deg, rgba(79, 70, 229, 0.15), rgba(34, 197, 94, 0.12));
+  box-shadow: 0 20px 55px rgba(79, 70, 229, 0.08);
+}
+
+.hero-label {
+  color: #2563eb;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.hero-subtitle {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 780px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.25rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  font-weight: 700;
+  border: 1px solid rgba(15, 23, 42, 0.08);
 }
 
 /* Dashboard Title */
 .main h1 {
-color: var(--ink);
-font-weight: 800;
-font-size: 3rem;
-margin-bottom: 0.5rem;
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 2.75rem;
+  margin-bottom: 0.35rem;
 }
 
 /* Subtitle */
 .section-note {
-color: var(--muted);
-font-size: 1rem;
-margin-bottom: 1rem;
+  color: var(--muted);
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
 }
 
 /* KPI Cards */
 .metric-card {
-background: var(--surface);
-border-radius: 16px;
-padding: 20px;
-min-height: 120px;
-
-border-left: 5px solid var(--primary);
-
-box-shadow:
-0 4px 20px rgba(0,0,0,0.06);
-
-transition: all 0.2s ease;
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 24px;
+  min-height: 130px;
+  border-left: 6px solid var(--primary);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
 
 .metric-card:hover {
-transform: translateY(-3px);
+  transform: translateY(-3px);
+  box-shadow: 0 24px 45px rgba(15, 23, 42, 0.12);
 }
 
 .metric-card span {
-color: var(--muted);
-font-size: 0.8rem;
-font-weight: 700;
-text-transform: uppercase;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .metric-card strong {
-color: var(--ink);
-display: block;
-margin-top: 10px;
-font-size: 2rem;
-font-weight: 800;
+  color: var(--ink);
+  display: block;
+  margin-top: 12px;
+  font-size: 2.1rem;
+  font-weight: 800;
 }
 
-/* Charts Container */
-[data-testid="stPlotlyChart"] {
-background: white;
-padding: 10px;
-border-radius: 16px;
-box-shadow:
-0 4px 20px rgba(0,0,0,0.05);
+/* Chart cards */
+[data-testid="stPlotlyChart"],
+[data-testid="stAltairChart"] {
+  background: var(--surface);
+  padding: 18px 16px 22px 16px;
+  border-radius: 22px;
+  border: 1px solid rgba(203, 213, 225, 0.35);
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.05);
+  margin-bottom: 1.25rem;
+  color: var(--ink);
+}
+
+/* Chart card labels */
+[data-testid="stPlotlyChart"] * {
+  color: #0f172a !important;
+}
+
+/* Altair chart wrapper */
+.css-1v3fvcr {
+  padding: 0 !important;
+}
+
+/* Plotly chart wrapper */
+.css-1sppy9a {
+  padding: 0 !important;
 }
 
 /* Tables */
 .stDataFrame {
-border-radius: 16px;
-border: 1px solid var(--line);
-overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(203, 213, 225, 0.45);
+  overflow: hidden;
+  margin-top: 1rem;
 }
 
 /* Headers */
 h1, h2, h3 {
-color: var(--ink);
-font-weight: 700;
+  color: var(--ink);
+  font-weight: 800;
 }
 
-/* Navigation Radio Buttons */
-.stRadio label {
-color: white !important;
-font-weight: 500;
-}
-
-/* Expander */
-.streamlit-expanderHeader {
-color: var(--ink);
-}
-
-/* Buttons */
-.stButton button {
-background: linear-gradient(
-135deg,
-var(--primary),
-var(--secondary)
-);
-
-color: white;
-border: none;
-border-radius: 10px;
-font-weight: 600;
-}
-
-.stButton button:hover {
-opacity: 0.92;
-}
-
-/* Remove Streamlit default top padding */
-.block-container {
-padding-top: 2rem;
+/* Radio buttons (granularity and navigation) */
+.stRadio label,
+[data-testid="stRadio"] label {
+  color: #0f172a !important;
+  font-weight: 700;
 }
 
 /* Section spacing */
 .element-container {
-margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Input focus */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.18) !important;
+}
+
+/* Button */
+.stButton button {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+}
+
+.stButton button:hover {
+  opacity: 0.94;
+}
+
+/* Container spacing */
+.block-container {
+  padding-top: 2rem;
+  padding-bottom: 2.5rem;
+}
+
+/* Small text accent */
+.small-text {
+  color: var(--muted);
+  font-size: 0.95rem;
 }
