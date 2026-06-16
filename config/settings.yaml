@@ -2,14 +2,14 @@ project:
   name: Indian Government Sentiment Analysis Dashboard
   default_lookback_days: 30
 
-reddit:
-  subreddits:
-    - india
-    - IndiaSpeaks
-    - indianews
-    - unitedstatesofindia
-  post_limit: 150
-  comment_limit: 50
+# News data source configuration (switched from Reddit to NewsAPI)
+news:
+  api_source: newsapi.org
+  country: in  # India
+  language: en  # English
+  page_size: 100  # Articles per query
+  days_back: 7  # Look back 7 days
+  sort_by: publishedAt  # Sort by publication date
   search_queries:
     - government
     - election
@@ -17,6 +17,20 @@ reddit:
     - budget
     - parliament
     - prime minister
+    - indian government
+    - ministry
+    - cabinet
+    - legislation
+
+# Kept for reference - legacy Reddit configuration (no longer used)
+# reddit:
+#   subreddits:
+#     - india
+#     - IndiaSpeaks
+#     - indianews
+#     - unitedstatesofindia
+#   post_limit: 150
+#   comment_limit: 50
 
 models:
   traditional_model_path: models/logistic_regression.joblib
@@ -24,4 +38,4 @@ models:
   transformer_model: distilbert-base-uncased-finetuned-sst-2-english
 
 database:
-  dataset: reddit_government_sentiment
+  dataset: news_government_sentiment
